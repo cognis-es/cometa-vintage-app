@@ -38,17 +38,12 @@ jobs:
         architecture: x64 # optional, x64 or arm64
     - run: flutter pub get
     #- run: flutter test
+    - name: Build Flutter
+      run: flutter build web
     - name: Deploy to GitHub Pages
-    # run: flutter build web
       uses: Cecilapp/GitHub-Pages-deploy@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         email: username@domain.tld
         build_dir: ./build/web
-    # - name: Deploy
-    #  uses: peaceiris/actions-gh-pages@v3
-    #  with:
-    #    github_token: ${{ secrets.GITHUB_TOKEN }}
-    #    publish_dir: ./build/web
-        # publish_dir: ./public
