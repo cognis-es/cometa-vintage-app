@@ -23,4 +23,25 @@ jobs:
     # Checkout to the selected branch
     - name: Checkout
       uses: actions/checkout@v3
-    
+    # Download and install flutter packages
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        # Define which stable flutter version should be used
+        flutter-version: "3.7.7"
+        channel: 'stable'
+        # Enables cache for flutter packages              
+        # Speed up the process
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
+        architecture: x64 # optional, x64 or arm64
+    - run: flutter pub get
+    #- run: flutter test
+    - run: flutter build web
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
+        # publish_dir: ./public
